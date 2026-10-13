@@ -1,0 +1,25 @@
+# DigitalOcean App Platform spec.
+# Create with: doctl apps create --spec .do/app.yaml
+# (or in the control panel, pick this repo and it will detect this file)
+name: csc8104-states
+region: lon
+services:
+  - name: states
+    github:
+      repo: Adam-Booth-NCL/csc8104-states
+      branch: master
+      deploy_on_push: true
+    source_dir: build
+    dockerfile_path: build/Dockerfile
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    health_check:
+      http_path: /areas
+ingress:
+  rules:
+    - component:
+        name: states
+      match:
+        path:
+          prefix: /
